@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora Filtrado Glomerular - EGRG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        #formulario {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #res {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="formulario">
+        <h1>Tasa de Filtrado Glomerular</h1>
+
+        <p>
+            <label for="scr">Creatinina (Scr en mg/100ml)</label>
+            <input type="number" id="scr" required>
+        </p>
+        <p>
+            <label for="sex">Sexo</label>
+            <select id="sex" required>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+            </select>
+        </p>
+        <p>
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" required>
+        </p>
+        <p>
+            <label for="afro">Etnia Afroamericana</label>
+            <select id="afro" required>
+                <option value="No">No</option>
+                <option value="Si">Sí</option>
+            </select>
+        </p>
+        <p id="res"></p>
+
+        <button onclick='myFunction();'>Calcular</button>
+	<p>Doctora Elvia Ramírez © 2023 </p>
+        <p align="center"> Powered by RVF </p>
+
+    </div>
+
+    <script>
+        function myFunction() {
+            var scr = parseFloat(document.getElementById("scr").value);
+            var sex = document.getElementById("sex").value;
+            var edad = parseInt(document.getElementById("edad").value);
+            var afro = document.getElementById("afro").value;
+
+            var k;
+            if (sex === "Masculino") {
+                k = 0.9;
+            } else {
+                k = 0.7;
+            }
+
+            var tfg = 141 * Math.min(scr / k, 1) ** 0.329 * Math.max(scr / k, 1) ** (-1.209) * (0.993 ** edad);
+
+            if (sex === "Femenino") {
+                tfg *= 1.018;
+            }
+
+            if (afro === "Si") {
+                tfg *= 1.159;
+            }
+
+            document.getElementById("res").innerHTML = "Tasa de Filtrado Glomerular (ml/min/1,73 m²) : " + tfg.toFixed(2);
+        }
+    </script>
+</body>
+</html>
